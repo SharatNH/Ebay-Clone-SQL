@@ -1,0 +1,139 @@
+<html>
+<head>
+    <title>Card Validation</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body ng-app="myapp" ng-controller="myctrl">
+
+    <p style="text-align: center">
+			 <span style="color:#e53238;font-size:40px">e<span style="color:#0064d3">b</span><span style="color:#f4ae01">a</span><span style="color:#88b719">y</span>
+			</span></p>
+    <fieldset>
+        <div class="container">
+            <h1></h1>
+            <div class="panel panel-default">
+                <div class="panel-heading">Payment</div>
+                <div class="panel-body">
+
+                    <div class="form-group">
+                        <div class="row">
+
+                            <label class="col-md-3 control-label" for="card-holder-name">&nbsp; Name on Card</label>
+                            <div class="col-md-5">
+                                <input type="text" class="form-control"  ng-model="inputName" placeholder="Card Holder's Name" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-md-3 control-label" for="card-number" > &nbsp; Card Number</label>
+                            <div class="col-md-5">
+                                <input type="number" class="form-control"  ng-model="inputCard" required pattern="[0-9]{16}" autofocus title="enter the 16 digit number correctly" placeholder="Debit/Credit Card Number" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-3 control-label" for="expiry-month">&nbsp; Expiration Date</label>
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <select class="form-control col-sm-2"  ng-model="inputMonth">
+                                            <option>Month</option>
+                                            <option value="01">Jan (01)</option>
+                                            <option value="02">Feb (02)</option>
+                                            <option value="03">Mar (03)</option>
+                                            <option value="04">Apr (04)</option>
+                                            <option value="05">May (05)</option>
+                                            <option value="06">June (06)</option>
+                                            <option value="07">July (07)</option>
+                                            <option value="08">Aug (08)</option>
+                                            <option value="09">Sep (09)</option>
+                                            <option value="10">Oct (10)</option>
+                                            <option value="11">Nov (11)</option>
+                                            <option value="12">Dec (12)</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <select class="form-control"  ng-model="inputYear">
+                                            <option>Year</option>
+                                            <option value="16">2016</option>
+                                            <option value="17">2017</option>
+                                            <option value="18">2018</option>
+                                            <option value="19">2019</option>
+                                            <option value="20">2020</option>
+                                            <option value="21">2021</option>
+                                            <option value="22">2022</option>
+                                            <option value="23">2023</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-3 control-label" for="cvv">&nbsp; Card CVV</label>
+                            <div class="col-sm-3">
+                                <input type="number" class="form-control"  ng-model="inputCVV" placeholder="CVV" required pattern="[0-9]{3}" title="3 digits please">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-offset-3 col-sm-9">
+                                <input type="submit" class="btn btn-success" ng-click="onsubmit()" ></input>
+                            </div>
+                        </div>
+                    </div>
+                </div> </div> </div>
+    </fieldset>
+
+</div>
+</body>
+<script>
+ var app=angular.module("myapp",[]);
+    app.controller("myctrl",function($scope,$http){
+
+        $scope.onsubmit=function() {
+            console.log("entered the card validation");
+            console.log($scope.inputCVV);
+            $http({
+                method: 'POST',
+                url: '/cardvalid',
+                data: {
+                    'name': $scope.inputName,
+                    'card': $scope.inputCard,
+                    'month': $scope.inputMonth,
+                    'year': $scope.inputYear,
+                    'cvv': $scope.inputCVV
+                }
+            }).success(function mysuccess(response) {
+                console.log("inside the success function");
+                console.log(response);
+                if (response.success) {
+                    window.alert("Order Processed");
+                    window.location.assign("/index");
+                }
+                else {
+                    window.alert("Invalid card");
+                    window.location.assign("/index");
+                }
+
+            });
+        }
+
+    });
+
+
+
+</script>
+</html>

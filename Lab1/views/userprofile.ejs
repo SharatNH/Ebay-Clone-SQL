@@ -1,0 +1,156 @@
+<html>
+<head>
+    <title>Ebay Clone</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body ng-app="myapp" ng-controller="myctrl">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <label style="margin-left:60px">
+			 <span style="color:#e53238;font-size:40px">e<span style="color:#0064d3">b<span style="color:#f4ae01">a<span
+                                 style="color:#88b719">y</span>
+            </label>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-primary btn-sm btn-block" >
+                                <span class="glyphicon glyphicon-share-alt" ></span> <a href="#" ng-click="userprofile()" style="color:blue;margin-left:850px" ng-click="continue()">Continue shopping</a>
+                            </button>
+
+
+                        </div>
+
+                        <div class="col-xs-4 col-md-offset-2">
+                            <h4></h4>
+
+                        </div>
+                    </div></div>
+
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>User Info</th>
+                            <th></th>
+                            <th></th>
+
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="x in names">
+                            <td class="col-md-5">
+                                <h5 ng-model="id">Ebay Handle: {{x.}}</h5>
+                                <h5 ng-model="title">First Name: {{x.}}</h5>
+                                <h5 ng-model="itemdesc">Last Name{{x.}}</h5>
+
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>User purchases</th>
+                            <th></th>
+                            <th></th>
+
+
+                        </tr>
+
+                        <tr ng-repeat="x in names">
+                            <td class="col-md-5">
+                                <h5 ng-model="id">Product id: {{x.}}</h5>
+                                <h5 ng-model="title">Product Description: {{x.}}</h5>
+                                <h5 ng-model="itemdesc">Product Value{{x.}}</h5>
+
+
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <th>User Sales</th>
+                            <th></th>
+                            <th></th>
+
+
+                        </tr>
+
+                        <tr ng-repeat="x in names">
+                            <td class="col-md-5">
+                                <h5 ng-model="id">Product id: {{x.}}</h5>
+                                <h5 ng-model="title">Product Description: {{x.}}</h5>
+                                <h5 ng-model="itemdesc">Product Value{{x.}}</h5>
+
+
+                            </td>
+                        </tr>
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</body>
+<script>
+    var app=angular.module("myapp",[]);
+    app.controller("myctrl",function($scope,$http){
+        var qnt=1;
+        var total=0;
+        $http({
+            method:'get',
+            url:'/userprofile'
+        }).success(function mysuccess(response){
+            if(response.failed)
+            {
+                window.alert("first signin");
+                window.location.assign("/index");
+                //revert to index alert that long in
+            }
+            else if(response.success)
+            {
+                //parse json objects
+                console.log(response.result);
+
+
+
+
+            }
+            else
+            {
+                //display that empty elements
+                $scope.alertMsg=false;
+            }
+        });
+
+
+        $scope.continue=function()
+        {
+            window.location.assign("/index");
+        }
+
+
+    });
+
+</script>
+
+
+</html>

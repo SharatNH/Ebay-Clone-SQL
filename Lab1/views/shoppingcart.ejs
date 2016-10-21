@@ -1,0 +1,230 @@
+<html>
+<head>
+    <title>Ebay Clone</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+</head>
+<body ng-app="myapp" ng-controller="myctrl">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <label style="margin-left:60px">
+			 <span style="color:#e53238;font-size:40px">e<span style="color:#0064d3">b<span style="color:#f4ae01">a<span
+                                 style="color:#88b719">y</span>
+            </label>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button type="button" class="btn btn-primary btn-sm btn-block" >
+                                <span class="glyphicon glyphicon-share-alt"></span>Continue shopping
+                            </button>
+
+
+                        </div>
+
+                        <div class="col-xs-4 col-md-offset-2">
+                            <h4>Shopping Cart</h4>
+
+                        </div>
+                    </div></div>
+
+                <div class="panel-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Product Description</th>
+                            <th></th>
+                            <th></th>
+
+                            <th>Quantity</th>
+                            <th class="text-center">Rate</th>
+                            <th class="text-center">Total</th>
+                            <th></th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="x in names track by $index" >
+                            <td class="col-md-5">
+                            <h5 ng-model="x.id">Product id: {{x.id}}</h5>
+                               <h5 ng-model="title">Product title: {{x.title}}</h5>
+                                <h5 ng-model="itemdesc">{{x.itemdesc}}</h5>
+
+                            <th><small  ng-model="myVar" ng-hide="myVar" ng-init="myVar=true" style="color:red"> cannot go less that one</small></th>
+                            </td>
+                            <td class="col-md-2"><h5><strong></strong></h5></td>
+                            <td class="col-md-2" style="text-align: center">
+                                <div class="input-group">
+                                        <!--span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-number" min="1" step="1" ng-click="minus(x.quantity)">
+                                                <i class="glyphicon glyphicon-minus"></i>
+                                            </button>
+                                        </span-->
+                                    <h5 ng-model="x.quantity">{{x.quantity}}</h5>
+                                    <!--input type="text" class="form-control input-number" ng-change="change()" ng-model="qnt"   required-->
+                                    <!--span class="input-group-btn">
+                                            <button type="button" class="btn btn-default btn-number" step="1" ng-click="plus(x.quantity)">
+                                                <i class="glyphicon glyphicon-plus"></i>
+                                            </button>
+											</span-->
+
+                                </div>
+                            </td>
+                            <td class="col-md-1 text-center" ng-model="rate"><strong>$ {{x.rate}}</strong></td>
+                            <td class="col-md-1 text-center" ng-model="total" ><strong>$ {{x.total}}</strong></td>
+                            <td class="col-sm-1 col-md-1">
+                                <button type="button" name="appoint" ng-click="appoint(x.id)" class="btn btn-danger" >
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </input>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-right"><h5>Net Total</h5></td>
+                            <td class="text-center" ng-model="nettotal" ng-init="nettotal=0"><h5><strong>$ {{nettotal}}</strong></h5></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="row">
+
+                        <div class="col-xs-6">
+
+                        </div>
+                        <div class="col-xs-3 col-md-offset-3">
+                            <input type="submit" value="checkout" ng-click="checkout()" class="btn btn-success btn-block">
+
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+<script>
+    var app=angular.module("myapp",[]);
+    app.controller("myctrl",function($scope,$http){
+        var qnt=1;
+        var total=0;
+        $http({
+            method:'get',
+            url:'/listshoppingcart'
+        }).success(function mysuccess(response){
+             if(response.failed)
+             {
+                 window.alert("first signin");
+                 window.location.assign("/index");
+                 //revert to index alert that long in
+             }
+            else if(response.success)
+             {
+                 //parse json objects
+                 console.log(response.result);
+                 $scope.names=response.result;
+                 var sum=0;
+                 for(i=0;i<response.result.length;i++)
+                 {
+                     sum=sum+parseInt(response.result[i].total);
+                 }
+                $scope.nettotal=sum;
+
+
+             }
+             else
+             {
+                 //display that empty elements
+                 $scope.alertMsg=false;
+             }
+        });
+
+
+        /*  //removed
+        $scope.minus=function(qnt){
+            qnt=$scope.x.quantity;
+            qnt=qnt-1;
+            console.log("called minus");
+            if(qnt<1){
+
+                $scope.myVar=false;
+            }
+            else{
+                $scope.x.quantity=qnt;
+                total = qnt * $scope.rate;
+                $scope.total=total;
+            }
+        }
+
+        $scope.plus=function(){
+            console.log("called plus");
+            qnt=$scope.x.quantity;
+            qnt=qnt+1;
+            if(qnt>=1){
+
+                $scope.myVar=true;
+            }
+            $scope.x.quantity=qnt;
+            total = qnt * $scope.rate;
+            $scope.total=total;
+        } */
+
+
+        $scope.checkout=function() {
+            window.location.assign("/checkout");
+        }
+
+        total = qnt * $scope.rate;
+        $scope.total=total;
+
+        $scope.continue=function()
+        {
+            window.location.assign("/index");
+        }
+
+
+        $scope.appoint = function(id){
+            console.log(id);
+
+            $http({
+                method:'POST',
+                url:'editcart',
+                data:{
+                    'id':id
+                }
+
+            }).success(function myfunction(response){
+                if(response.success) {
+                    window.alert("item removed");
+                    window.location.assign("/index");
+                }
+                else
+                {
+                    window.alert("item could not be removed");
+                    window.location.assign("/index");
+                }
+            });
+        }
+
+    });
+
+</script>
+
+
+</html>

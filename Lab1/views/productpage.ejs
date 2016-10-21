@@ -1,0 +1,277 @@
+
+<html lang="en">
+
+<head>
+
+    <title>Ebay-Item Portpolio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+</head>
+
+<body style="background-color: #dddddd" ng-app="myapp" ng-controller="myctrl">
+
+
+
+<div class="container" style="background-color:white;width:2000px;height:30px;line-height: 2em">
+
+    <div class="singup">
+        <div class="row">
+            <div class="col-lg-12" ng-model="count">
+
+                Hi {{user}}
+                <a href="#"  class="cart" role="button" aria-expanded="false" style="color:grey"><span class="glyphicon glyphicon-shopping-cart" style="height:40px;margin-left:1100px"></span></a>{{count}}<span class="caret"></span>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <label style="margin-left:60px">
+			 <span style="color:#e53238;font-size:40px">e<span style="color:#0064d3">b<span style="color:#f4ae01">a<span
+                                 style="color:#88b719">y</span>
+            </label>
+
+        </div>
+    </div>
+
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <!--put ebay homepage link-->
+        <a class="navbar-brand" href="#"></a>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+
+</div>
+</hr>
+<!-- Page Content -->
+<div class="container" >
+    </br>
+    </br>
+    <!-- Portfolio Item Heading -->
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-header">{{title}}
+
+            </h1>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- Portfolio Item Row -->
+    <div class="row">
+
+
+
+        <div class="col-md-6">
+            <h4>Item description:</h4>
+            <h4>{{itemdesc}}</h4>
+            <h4>Product id: {{id}}</h4>
+            <h5>Seller Info</h5>
+            <h5>{{sellerinfo}}</h5></br>
+            Quantity : <input class="form-control"  type="number" id="qty" placeholder="Ex:1" style="width:50px" ng-model="qty" style="width:70px" ng-change="total=qty*rate;checkqty()" min="1" title="should be  min 1"  required></br></br>
+            Available quantity : {{quantity}} </br>
+            <p ng-model="rate">Rate: $ {{rate}}</p>
+            <p ng-model="total" >Total: $ {{total}}</p>
+            </br>
+        </div>
+
+
+
+        <div class="col-md-2 " ng-hide="bidding" ng-model="bidding" ng-init="bidding=true">
+            <h2>Open for Bidding</h2>
+            Quote your price : <input class="form-control"  type="number" id="bid" value="1" style="width:100px" ng-model="bidamt" placeholder="in USD" min="1" title="should be minimum of 1"> </br></br>
+
+            Quantity : <input class="form-control"  type="number" id="qty" placeholder="Ex:1" style="width:50px" ng-model="qty" style="width:70px" ng-change="total=qty*rate" min="1" title="should be  min 1" required></br></br>
+            Available quantity : {{quantity}} </br>
+                </br>
+            <input type="submit" class="btn btn-info" value=" Click to Bid " ng-click="addtobid()">
+
+        </div>
+    </div>
+    <input type="submit" class="btn btn-info" value=" Add to Cart" ng-hide="cartdisplay" ng-model="cartdisplay" ng-init="cartdisplay=false" ng-click="addtocart()">
+
+    <h3 style="color:red" ng-init="quantitymsg=true" ng-model="quantitymsg" ng-hide="quantitymsg"> More than available quantity</h3>
+
+    <h3 style="color:red" ng-init="cartmessage=true" ng-model="cartmessage" ng-hide="cartmessage"> Item Empty. Wait for seller to further emlist</h3>
+    <h2 style="color:red" ng-init="bidat=true" ng-model="bidat" ng-hide="bidat"> Bidding is closed on this item</h2>
+</div>
+
+</div>
+<!-- /.row -->
+
+<!-- Related Projects Row should be added here. check file-->
+</div>
+
+</body>
+<script>
+
+    var app=angular.module("myapp",[]);
+    app.controller("myctrl",function($scope,$http){
+
+        console.log("inside productpage ajax");
+        var id,time,bid,count;
+
+        $http({
+            method:'get',
+            url:'/getcart'
+        }).success(function mySuccess(response){
+            debugger
+            console.log("inside productpage success");
+            console.log(response);
+            //$scope.user=response.user;
+            //$scope.count=response.count;
+            //$scope.total=response.total;
+            if(response.success) {
+                var day = response.day;
+                $scope.title = response.result[0].title;
+                $scope.itemdesc = response.result[0].itemdesc;
+                $scope.sellerinfo = response.result[0].sellerinfo;
+                $scope.rate = response.result[0].itemprice;
+                $scope.quantity = response.result[0].quantity;
+                $scope.id = response.result[0].id;
+                time = response.result[0].timecopy;
+                bid = response.result[0].bidding;
+
+                count=$scope.quantity;
+            }
+                if(bid=="true")
+                {
+                    var bday=time;
+                    var diff=day-bday;
+
+                    if(diff<=4)
+                    {
+                        $scope.bidding=false;
+
+                    }
+                    else
+                    {
+                        $scope.bidat=false;
+                    }
+                }
+
+
+                if(count<1)
+                {
+                    $scope.cartdisplay=true;
+                    $scope.cartmessage=false;
+                    $scope.bidding=true;
+                }
+            console.log(response.day);
+            console.log(bid);
+            console.log(response.result[0].title);
+            //console.log(response.total);
+        });
+
+
+
+        $scope.checkqty=function(){
+
+            console.log("entered the check qty function");
+
+
+            var total;
+            var qnt=$scope.qty;
+            var rate=$scope.rate;
+            if(qnt<=count) {
+                total = qnt * rate;
+                $scope.total = total;
+                $scope.quantitymsg=true;
+                $scope.cartdisplay=false;
+            }
+            else
+            {
+                $scope.quantitymsg=false;
+                $scope.cartdisplay=true;
+            }
+
+
+        }
+
+        $scope.addtocart=function(){
+            console.log("entered the function");
+            var qty=$scope.qty;
+            var id=$scope.id;
+            var rate=$scope;
+            var total=$scope.total;
+            var itemdesc=$scope.itemdesc;
+
+
+            console.log(qty);
+            $http({
+                method:'get',
+                url:'/addtocart',
+                params : {
+                     qty:$scope.qty,
+                    title:$scope.title,
+                    id:$scope.id,
+                    rate:$scope.rate,
+                    total:$scope.total,
+                    itemdesc:$scope.itemdesc
+
+
+                }
+            }).success(function mySuccess(response){
+
+              if(response.success)
+              {
+                  window.alert("added to cart!!! \n Continue Shopping");
+                  window.location.assign("/index");
+              }
+              else
+              {
+                  window.alert("First Login  and then proceed to add to cart");
+                  window.location.assign("/index");
+              }
+            });
+        }
+
+        $scope.addtobid=function(){
+            console.log("entered the bid function");
+            var bidamt=$scope.bidamt;
+            var pid=$scope.id;
+
+            console.log(pid);
+            console.log(bidamt);
+            $http({
+                method:'get',
+                url:'/addtobid',
+                params : {
+                    bidamt:$scope.bidamt,
+                    pid:$scope.id,
+                    qty:$scope.qty1
+
+                }
+            }).success(function mySuccess(response){
+
+                if(response.success)
+                {
+                    window.alert("added to bid queue!!! \n Continue Shopping");
+                    window.location.assign("/index");
+                }
+                else
+                {
+                    window.alert("First Login  and then proceed to add to cart");
+                    window.location.assign("/index");
+                }
+            });
+        }
+
+    });
+
+
+</script>
+
+</html>
+

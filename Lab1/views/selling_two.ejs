@@ -1,0 +1,211 @@
+<html lang="en">
+<head>
+    <title>Ebay Clone</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <style>
+        @import url('http://fonts.googleapis.com/css?family=Open+Sans:200,300');
+
+        body {
+            background: url('http://image.shutterstock.com/display_pic_with_logo/871054/268764890/stock-photo-overhead-of-essentials-for-modern-young-person-different-photography-objects-on-wooden-background-268764890.jpg') no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            color:#fff;
+            background-color:#333;
+            font-family: 'Open Sans',Arial,Helvetica,Sans-Serif;
+        }
+
+        a:link, a:visited {
+            color:#eee;
+        }
+
+        .block {
+            background-color:rgba(0,0,0,0.2);
+            height:370px;
+            padding-left:12px;
+            padding-right:12px;
+        }
+
+        .block-sm {
+            height:180px;
+        }
+
+        .btn-flat {
+            font-family: 'Open Sans',Arial,Helvetica,Sans-Serif;
+            border-radius:0px;
+            border-width:0;
+            background-image:none;
+            padding:16px;
+            margin:0 auto;
+            margin-top:15px;
+            width:70%;
+            font-size:20pt;
+        }
+
+        /* mini carousel */
+        .carousel-inner img {
+            width:100%;
+            height:100%;
+        }
+
+        #myCarousel {
+            font-size:90%;
+        }
+
+        .carousel-controls-mini {
+            margin-left:42%;
+        }
+
+        .carousel-controls-mini > a {
+            border:1px solid #eee;
+            margin:1px;
+            width:20px;
+            display:block;
+            float:left;
+            text-align:center;
+        }
+
+        #carousel-bounding-box {
+            margin:0 auto;
+            width:300px;
+        }
+
+
+
+
+    </style>
+</head>
+<body ng-app="myapp" ng-controller="myctrl">
+<div class="container">
+
+    <div class="row-fluid">
+        <div class="span10 offsetHalf">
+
+            <i class="icon-screenshot icon-5x" style="color:#ee1111;"></i>
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <h1 class="pull-center" align="center"><strong>Over 160 million shoppers</strong></h1>
+        <h1 class="pull-center" align="center"><strong>want to buy your stuff.</strong></h1>
+
+    </div>
+    <br>
+    <div class="row-fluid">
+
+        <div class="span5 offsetHalf block">
+            <div class="pull-center">
+                </br>
+
+                <div class="container">
+                    <div class="row centered-form">
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">What do you want to sell? <small>Describe</small></h3>
+                            </div>
+                            <div class="panel-body">
+                                <form role="form">
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Give your listing a descriptive title..." align="middle" maxlength="80" size="100" style="height:40px;width:400px" ng-model="title">
+                                                <h5><small>Example: Laptop</small></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="Give description of your item..." align="middle" style="height:40px;width:1000px" ng-model="desc">
+                                                <h5><small>Example: 2.2 GHz Core 2 Duo, 2GB RAM…</small></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-xs-6 col-sm-6 col-md-6">
+                                            <div class="form-group">
+
+                                                <input type="text" class="form-control" placeholder="Give sellers information..." align="middle" style="height:40px;width:700px" ng-model="sellerdetails">
+                                                <h5><small>Example: Jon Smith, shipping from NY</small></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-xs-3 col-sm-3 col-md-3">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" placeholder="Quote your item price..."  style="height:40px;width:200px" ng-model="price">
+                                                <h5><small>Example: $600</small></h5>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-xs-3 col-sm-3 col-md-3">
+                                            <div class="form-group">
+                                                <input type="number" class="form-control" placeholder="Quote availability..." min="1" style="height:40px;width:200px" ng-model="avail">
+                                                <h5><small>Example: 4</small></h5>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2 col-sm-2 col-md-2">
+                                            <div class="form-group">
+                                                <h5 style="color:black"> Bidding : <input type="checkbox"  ng-model="check"></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <input type="submit" class="btn btn-primary btn-lg" placeholder="Sell" align="middle" ng-click="submit()">
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    var app=angular.module("myapp",[]);
+    app.controller("myctrl",function($scope,$http){
+
+        $scope.submit=function() {
+        console.log("inside selling_two");
+        $http
+        ({
+            method:'POST',
+            url:'/additems',
+            data: {
+
+            'title' : $scope.title,
+            'desc': $scope.desc,
+            'sellerdetails': $scope.sellerdetails,
+            'price' : $scope.price,
+            'avail' : $scope.avail,
+            'check' : $scope.check
+        }
+            }).success( function mysuccess(response){
+               if(response.success)
+               {
+                   window.alert("advertisement added");
+                   window.location.assign("/index");
+               }
+               else
+               {
+                   window.alert("advertisement failed to be added");
+                   window.location.assign("/index");
+               }
+        });
+        }
+    });
+
+
+</script>
+</html>
